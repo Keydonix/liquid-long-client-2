@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<head>
+	<meta charset='utf-8'>
+	<title>Liquid Long by Keydonix</title>
+	<link rel='icon' type='image/x-icon' href='assets/favicons/favicon.ico'>
+	<link rel='icon' type='image/png' href='assets/favicons/favicon-16x16.png' sizes='16x16' />
+	<link rel='icon' type='image/png' href='assets/favicons/favicon-32x32.png' sizes='32x32' />
+	<link rel='icon' type='image/png' href='assets/favicons/favicon-96x96.png' sizes='96x96' />
+	<link rel='icon' type='image/png' href='assets/favicons/favicon-128.png' sizes='128x128' />
+	<link rel='icon' type='image/png' href='assets/favicons/favicon-196x196.png' sizes='196x196' />
+	<link href='index.css' rel='stylesheet' type='text/css' />
+	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700|Roboto+Slab:100,300,400,700' rel='stylesheet'>
+</head>
+
+<body>
+	<script type='module' src='vendor/es-module-shims/es-module-shims.js'></script>
+	<script type='importmap-shim'>
+		{
+			"imports": {
+				"knockout": "vendor/knockout/knockout-latest.js",
+				"ethers": "vendor/ethers/ethers.min.js",
+				"@keydonix/liquid-long-client-library": "vendor/liquid-long-client-library/index.js"
+			}
+		}
+	</script>
+	<main>
+		<div class='loading' data-bind='visible: false'>
+			Loading...
+		</div>
+		<section class='outer-container' style='display: none' data-bind='visible: true'>
+			<section class='header-container'>
+				<span>Close a Position</span>
+			</section>
+			<section class='position-list-container'>
+				<section class='position-list-item' data-bind='visible: !ethereumBrowser()'>
+					<span>You need an Ethereum enabled browser to see your positions.</span>
+				</section>
+				<section class='position-list-item' data-bind='visible: ethereumBrowser() && !loggedIn()'>
+					<button class='login-button' data-bind='click: login'>Login to see your positions</button>
+				</section>
+				<section class='position-list-item icon-spin4' data-bind='visible: loadingPositions()'>
+					Sorry for the delay, this may take a minute!<br/><h6>(we are working on speeding up this process)</h6>
+				</section>
+				<!-- ko foreach: positions -->
+				<section class='position-list-item position'>
+					<div class='header'></div>
+					<div class='label liquidation-price'>Liquidation<br/>Price</div>
+					<div class='data liquidation-price' data-bind='text: liquidationPriceText' data-tooltip='The ETH:USD price at which your position will automatically be closed and you will suffer a liquidation penalty.'></div>
+					<div class='label leverage-multiplier'>Leverage<br/>Multiplier</div>
+					<div class='data leverage-multiplier' data-bind='text: leverageMultiplierText, style: { color: leverageMultiplierColor }' data-tooltip='<a class="icon-link-ext" href="http://help.keydonix.com/articles/27724-what-is-leverage" rel="noopener nofollow" target="_blank">Leverage</a>multiplies your profit/loss when the price of ETH moves.'></div>
+					<div class='label leverage-size'>Leverage<br/>Size</div>
+					<div class='data leverage-size' data-bind='text: leverageSizeText' data-tooltip='The amount of ETH that is currently leveraged in this position.'></div>
+					<div class='label service-fee'>Service<br/>Fee</div>
+					<div class='data service-fee' data-bind='text: serviceFeeText' data-tooltip='ETH cost of using this service. It is a percentage of the amount of ETH temporarily loaned to you.'></div>
+					<div class='label slippage-protection'>Slippage<br/>Protection</div>
+					<div class='data slippage-protection' data-bind='text: slippageProtectionText' data-tooltip='!!WARNING!! Configurable slippage protection is not yet implemented. If the price of DAI:ETH changes between the time the page queried for the price and the time your transaction is mined, then your transaction may fail!'></div>
+					<div class='label expected-yield'>Minimum<br/>ETH Return</div>
+					<div class='data expected-yield' data-bind='text: expectedYieldText' data-tooltip='The minimum amount of ETH you will receive upon successfully closing this position. If the ETH you provided for slippage protection is excessive, you will be refunded and may get back more than this.'></div>
+					<button class='close' data-bind='click: () => closeClicked(), visible: closeButtonVisibility'>Close</button>
+					<div class='close icon-spin4' disabled data-bind='visible: closingSpinnerVisibility'></div>
+					<div class='explainer' data-bind='html: explainerHtml, visible: explainerVisibility'></div>
+					<div class='footer icon-angle-double-down' data-bind='visible: collapsed, click: () => expand()'></div>
+					<div class='footer icon-angle-double-up' data-bind='visible: expanded, click: () => collapse()'></div>
+					<div class='expansion' data-bind='visible: expanded'>
+						<a class='id icon-link-ext' target='_blank' rel='noopener nofollow' data-bind='attr: { href: `https://makerscan.io/cups/${id}/` }'>Open Externally</a>
+						<div class='label current-price'>Current ETH Price</div>
+						<div class='data current-price' data-bind='text: currentPriceText'></div>
+						<div class='label current-value'>Current Value</div>
+						<div class='data current-value' data-bind='text: currentValueText'></div>
+						<div class='label liquidation-price'>Liquidation Price</div>
+						<div class='data liquidation-price' data-bind='text: liquidationPriceText'></div>
+						<div class='label liquidation-value'>Liquidation Value</div>
+						<div class='data liquidation-value' data-bind='text: liquidationValueText'></div>
+						<div class='legend'>
+							<img class='example double' src='assets/line-green-white.png' width='30' height='6' />
+							<div class='description double'>Price to double your money</div>
+							<img class='example current' src='assets/line-solid.png' width='30' height='3' />
+							<div class='description current'>Current Price</div>
+							<img class='example liquidate' src='assets/line-red-white.png' width='30' height='6' />
+							<div class='description liquidate'>Liquidation price
+								• lose <span data-bind='text: maxLossText'></span> if you close your position voluntarily
+								• lose <span data-bind='text: liquidationLossText'></span> if your position is forcefully closed</div>
+						</div>
+						<div class='chart' data-bind='event: { mousemove: chartMouseMove, mouseout: chartMouseOut }'>
+							<div class='double-price' data-bind='text: doublePriceText, visible: doublePriceLineVisibility'></div>
+							<div class='current-price' data-bind='text: currentPriceText, style: { bottom: currentPriceLineStyleBottom }, visible: currentPriceLineVisibility'></div>
+							<div class='liquidation-price' data-bind='text: liquidationPriceText, visible: liquidationPriceLineVisibility'></div>
+							<div class='hover' data-bind='style: { bottom: hoverPriceLineStyleBottom }, visible: hoverPriceLineVisibility'>
+								<div class='price' data-bind='text: hoverPriceText'></div>
+								<div class='value' data-bind='text: hoverValueText'></div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- /ko -->
+				<section class='position-list-item' data-bind='visible: ethereumBrowser() && loggedIn()'>
+					<button class='open-position-button' onclick='location.href="https://liquid-long.keydonix.com/"'>Open New Position</button>
+				</section>
+			</section>
+			<section class='footer-container'>
+				<span>Have questions?  <a class='icon-link-ext' target='_blank' rel='noopener nofollow' href='https://help.keydonix.com'>Get answers</a></span>
+			</section>
+		</section>
+		<script type='module-shim'>
+			import 'knockout'
+			import { Main } from './models/main.js'
+			window.main = new Main()
+			ko.applyBindings(window.main)
+		</script>
+	</main>
+</body>

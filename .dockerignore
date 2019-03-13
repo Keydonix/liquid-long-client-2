@@ -1,0 +1,13 @@
+/.git/
+/**/node_modules/
+/output/**/*.d.ts
+/output/**/*.js
+/output/**/*.js.map
+/output/vendor/**/*
+!/output/vendor/.gitkeep
+/.dockerignore
+/.editorconfig
+/.gitignore
+/Dockerfile
+/LICENSE
+/README.md
