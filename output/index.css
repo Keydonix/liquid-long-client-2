@@ -1,0 +1,506 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	box-sizing: border-box;
+	display: flex;
+	align-content: safe center;
+	justify-content: safe center;
+	align-items: center;
+	justify-items: center;
+	font-family: Roboto slab, serif;
+}
+
+head, script {
+	display: none;
+}
+
+span, a {
+	display: initial;
+}
+
+a {
+	color: #FFF24A;
+}
+
+button {
+	cursor: pointer;
+	border-radius: 6px;
+	font-size: 16px;
+	line-height: 21px;
+	background-color: #5094E4;
+	color: #FFFFFF;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background-color: #003B5B;
+	width: 100%;
+	height: 100%;
+}
+
+main {
+	height: 100%;
+	width: 100%;
+}
+
+.noselect {
+	user-select: none;
+}
+
+.loading {
+	font-size: 48px;
+	color: #FFFFFF;
+}
+
+.outer-container {
+	height: 100%;
+	display: grid;
+	grid-template-rows: max-content 1fr max-content;
+	gap: 20px;
+	align-items: start;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.header-container {
+	font-size: 48px;
+	line-height: 1;
+	color: #FFFFFF;
+}
+
+.open-position-button {
+	height: 40px;
+	width: 230px;
+}
+
+.position-list-container {
+	display: grid;
+	gap: 10px;
+}
+
+.position-list-item {
+	height: 120px;
+	width: 770px;
+	display: grid;
+	border-radius: 8px;
+	background-color: #FFFFFF;
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+	font-size: 20px;
+}
+
+.position {
+	grid-template-columns: repeat(7, 100px);
+	grid-template-rows: 36.5px max-content max-content max-content 36.5px max-content;
+	justify-content: space-between;
+	height: auto;
+	gap: 0px;
+	overflow: hidden;
+}
+
+.position > .header {
+	grid-column-start: 1;
+	grid-column-end: 7;
+	grid-row-start: 1;
+}
+
+.position > .label {
+	font-size: 10px;
+	line-height: 16px;
+	color: #000000;
+	opacity: 0.5;
+	text-align: center;
+}
+
+.position > .data {
+	font-size: 20px;
+	line-height: 30px;
+	color: #4A4A4A;
+	white-space: nowrap;
+	font-weight: bold;
+	overflow: hidden;
+	max-width: 100%;
+}
+
+.position > .liquidation-price.label {
+	grid-column-start: 1;
+	grid-row-start: 2;
+}
+
+.position > .liquidation-price.data {
+	grid-column-start: 1;
+	grid-row-start: 3;
+	color: #FE5F5B;
+	border-bottom: 1px dotted;
+}
+
+.position > .leverage-multiplier.label {
+	grid-column-start: 2;
+	grid-row-start: 2;
+}
+
+.position > .leverage-multiplier.data {
+	grid-column-start: 2;
+	grid-row-start: 3;
+	border-bottom: 1px dotted;
+}
+
+.position > .leverage-size.label {
+	grid-column-start: 3;
+	grid-row-start: 2;
+}
+
+.position > .leverage-size.data {
+	grid-column-start: 3;
+	grid-row-start: 3;
+	border-bottom: 1px dotted;
+}
+
+.position > .service-fee.label {
+	grid-column-start: 4;
+	grid-row-start: 2;
+}
+
+.position > .service-fee.data {
+	grid-column-start: 4;
+	grid-row-start: 3;
+	border-bottom: 1px dotted;
+}
+
+.position > .slippage-protection.label {
+	grid-column-start: 5;
+	grid-row-start: 2;
+}
+
+.position > .slippage-protection.data {
+	grid-column-start: 5;
+	grid-row-start: 3;
+	border-bottom: 1px dotted;
+}
+
+.position > .expected-yield.label {
+	grid-column-start: 6;
+	grid-row-start: 2;
+}
+
+.position > .expected-yield.data {
+	grid-column-start: 6;
+	grid-row-start: 3;
+	border-bottom: 1px dotted;
+}
+
+.position > .close {
+	grid-column-start: 7;
+	grid-row-start: 1;
+	grid-row-end: 6;
+	height: 100%;
+	width: 100%;
+	color: white;
+	font-weight: bold;
+	z-index: 1; /* above the expansion hover */
+	border-radius: 0px;
+	background-color: #FE5F5B;
+}
+.position > button.close {
+	box-shadow: -3px 0px 6px 0px #cccccc;
+}
+.position > .close:hover:enabled {
+	background-color: #E05F5B;
+}
+
+.position > .explainer {
+	grid-column-start: 1;
+	grid-column-end: 7;
+	grid-row-start: 4;
+	display: inline-block;
+	padding: 5px;
+	background: #ffff0040;
+	font-size: 12px;
+	font-weight: normal;
+}
+.position > .explainer > a {
+	color: blue;
+}
+
+.position > .footer {
+	grid-column-start: 1;
+	grid-column-end: 8;
+	grid-row-start: 5;
+	width: 100%;
+	height: 100%;
+}
+.position > .footer:hover {
+	background-color: #0F0F0F0F;
+}
+
+.position > .expansion {
+	grid-column-start: 1;
+	grid-column-end: 8;
+	grid-row-start: 6;
+	display: grid;
+	grid-template-columns: 25% 25% 50%;
+	grid-template-rows: 40px repeat(4, 1fr) 50%;
+	height: 370px;
+	width: 100%;
+	background-color: #011F2F;
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+	color: white;
+}
+
+.position > .expansion > .label {
+	align-self: end;
+	font-size: 10px;
+	line-height: 16px;
+	opacity: 0.5;
+}
+
+.position > .expansion > .data {
+	align-self: start;
+	font-size: 20px;
+	line-height: 30px;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 100%;
+}
+
+.position > .expansion > .id {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	grid-row-start: 1;
+}
+
+.position > .expansion > .current-price.label {
+	grid-column-start: 1;
+	grid-row-start: 2;
+}
+
+.position > .expansion > .current-price.data {
+	grid-column-start: 1;
+	grid-row-start: 3;
+}
+
+.position > .expansion > .current-value.label {
+	grid-column-start: 1;
+	grid-row-start: 4;
+}
+
+.position > .expansion > .current-value.data {
+	grid-column-start: 1;
+	grid-row-start: 5;
+}
+
+.position > .expansion > .liquidation-price.label {
+	grid-column-start: 2;
+	grid-row-start: 2;
+}
+
+.position > .expansion > .liquidation-price.data {
+	grid-column-start: 2;
+	grid-row-start: 3;
+	color: #FE5F5B;
+}
+
+.position > .expansion > .liquidation-value.label {
+	grid-column-start: 2;
+	grid-row-start: 4;
+}
+
+.position > .expansion > .liquidation-value.data {
+	grid-column-start: 2;
+	grid-row-start: 5;
+}
+
+.position > .expansion > .legend {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	grid-row-start: 6;
+	display: grid;
+	grid-template-columns: 70px 1fr;
+	grid-template-rows: repeat(3, max-content);
+	gap: 5px;
+	font-size: 12px;
+	font-weight: 300;
+	line-height: 16px;
+	color: #D8D8D8;
+}
+
+.position > .expansion > .legend > .example {
+	justify-self: end;
+}
+
+.position > .expansion > .legend > .description {
+	justify-self: start;
+}
+
+.position > .expansion > .legend > .example.double {
+	grid-column-start: 1;
+	grid-row-start: 1;
+}
+
+.position > .expansion > .legend > .description.double {
+	grid-column-start: 2;
+	grid-row-start: 1;
+}
+
+.position > .expansion > .legend > .example.current {
+	grid-column-start: 1;
+	grid-row-start: 2;
+}
+
+.position > .expansion > .legend > .description.current {
+	grid-column-start: 2;
+	grid-row-start: 2;
+}
+
+.position > .expansion > .legend > .example.liquidate {
+	grid-column-start: 1;
+	grid-row-start: 3;
+	align-self: start;
+	margin-top: 0.5em;
+}
+
+.position > .expansion > .legend > .description.liquidate {
+	grid-column-start: 2;
+	grid-row-start: 3;
+	display: inline;
+	white-space: pre-line;
+}
+
+.position > .expansion > .chart {
+	grid-column-start: 3;
+	grid-row-start: 1;
+	grid-row-end: 7;
+	width: 100%;
+	height: 100%;
+	/* background: linear-gradient(to bottom, lime, gold, red); */
+	background: linear-gradient(180deg, #56BF2B 0%, #6B882E 40%, #A1793E 60%, #FE5F5B 100%);
+	border-bottom-right-radius: 5px;
+	border-bottom-color: white;
+	border-bottom-width: medium;
+	border-bottom-style: solid;
+	display: block;
+	position: relative;
+	user-select: none;
+}
+
+.position > .expansion > .chart > .double-price {
+	position: absolute;
+	top: 0px;
+	left: 5px;
+}
+
+.position > .expansion > .chart > .current-price {
+	position: absolute;
+	left: 0px;
+	width: 100%;
+	padding-left: 5px;
+	justify-content: left;
+	border-bottom-width: 1px;
+	border-bottom-color: white;
+	border-bottom-style: solid;
+}
+
+.position > .expansion > .chart > .liquidation-price {
+	position: absolute;
+	bottom: 0px;
+	left: 5px;
+}
+
+.position > .expansion > .chart > .hover {
+	position: absolute;
+	left: 0px;
+	width: 100%;
+	padding-left: 5px;
+	padding-right: 5px;
+	display: flex;
+	justify-content: space-between;
+	border-bottom-width: 1px;
+	border-bottom-color: white;
+	border-bottom-style: dotted;
+}
+
+.position > .expansion > .chart > .hover > .price {
+	user-select: none;
+	justify-content: left;
+}
+
+.position > .expansion > .chart > .hover > .value {
+	user-select: none;
+	justify-content: left;
+}
+
+.login-button {
+	height: 40px;
+	width: 230px;
+}
+
+.footer-container {
+	font-size: 20px;
+	font-weight: lighter;
+	color: #FFFFFF;
+}
+
+/* Font Icons: http://fontello.com/ */
+@font-face {
+	font-family: 'liquid-long';
+	src: url('assets/font/liquid-long.woff2?14202647') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"]:after, [class*=" icon-"]:after {
+	font-family: "liquid-long";
+	font-style: normal;
+	font-weight: normal;
+
+	display: inline-block;
+	text-decoration: inherit;
+	width: 1em;
+	margin-right: .2em;
+	text-align: center;
+	/* opacity: .8; */
+
+	/* For safety - reset parent styles, that can break glyph codes*/
+	font-variant: normal;
+	text-transform: none;
+
+	/* fix buttons height, for twitter bootstrap */
+	line-height: 1em;
+
+	/* Animation center compensation - margins should be symmetric */
+	/* remove if not needed */
+	margin-left: .2em;
+
+	/* you can be more comfortable with increased icons size */
+	/* font-size: 120%; */
+
+	/* Font smoothing. That was taken from TWBS */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	/* Uncomment for 3D effect */
+	/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-angle-double-up:after { content: '\f102'; } /* '' */
+.icon-angle-double-down:after { content: '\f103'; } /* '' */
+.icon-link-ext:after { content: '\f08e'; } /* '' */
+.icon-spin4:after { content: '\e834'; } /* '' */
+
+.icon-link-ext:after {
+	vertical-align: super;
+	font-size: 60%;
+	text-decoration-line: none;
+}
+
+.icon-spin4:after {
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
