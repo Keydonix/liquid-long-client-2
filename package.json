@@ -11,7 +11,7 @@
 		"build": "tsc && npm run copy-es-module-shims && npm run copy-knockout && npm run copy-ethers && npm run copy-liquid-long-client-library"
 	},
 	"dependencies": {
-		"@keydonix/liquid-long-client-library": "5.1.0",
+		"@keydonix/liquid-long-client-library": "6.0.0",
 		"es-module-shims": "0.2.0",
 		"ethers": "4.0.7",
 		"knockout": "3.4.2"
