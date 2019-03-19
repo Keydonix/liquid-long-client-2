@@ -94,7 +94,7 @@
 				</section>
 				<!-- /ko -->
 				<section class='position-list-item' data-bind='visible: ethereumBrowser() && loggedIn()'>
-					<button class='open-position-button' onclick='location.href="https://liquid-long.keydonix.com/"'>Open New Position</button>
+					<a class='open-position' data-bind='attr: { href: `https://liquid-long.keydonix.com/#/?affiliate=${affiliate}` }'>Open New Position</a>
 				</section>
 			</section>
 			<section class='footer-container'>

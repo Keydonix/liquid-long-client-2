@@ -75,9 +75,16 @@ main {
 	color: #FFFFFF;
 }
 
-.open-position-button {
+a.open-position {
 	height: 40px;
 	width: 230px;
+	cursor: pointer;
+	border-radius: 6px;
+	font-size: 16px;
+	line-height: 40px;
+	background-color: #5094E4;
+	color: #FFFFFF;
+	text-align: center;
 }
 
 .position-list-container {

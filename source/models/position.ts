@@ -93,7 +93,7 @@ export class Position {
 			this.awaitingCloseConfirmation(true)
 			const expectedEthYield = await this.expectedYieldInEth()
 			if (expectedEthYield === null) throw new Error(`Not enough available liquidity to close this position.`)
-			await this.liquidLong.closePosition(this.ownerAddress, this.id, expectedEthYield)
+			await this.liquidLong.closePosition(this.ownerAddress, this.id, expectedEthYield, this.main.affiliate)
 			this.main.populatePositions()
 		} finally {
 			this.awaitingCloseConfirmation(false)

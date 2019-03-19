@@ -5,7 +5,7 @@ import { LiquidLong, Address, Position as ContractPosition } from '@keydonix/liq
 // dev address
 // const liquidLongContractAddress = Address.fromHexString('B03CF72BC5A9A344AAC43534D664917927367487')
 // production address
-const liquidLongContractAddress = Address.fromHexString('ADbE0dD80f0D75BEeD3247d659Ff7FE3bDACD8a1')
+const liquidLongContractAddress = Address.fromHexString('28b61faf5f4b9381a9cdb38d9f87788c563e3644')
 
 interface EthereumProvider {
 	sendAsync?: (request: any, callback: (error: any, response: any) => void) => void
@@ -32,7 +32,7 @@ const supportsLogin = () => !!window.ethereum
 
 export class Main {
 	private liquidLong: LiquidLong
-	private readonly currentPrice = ko.observable(0)
+	public readonly affiliate: Address
 	public readonly positions = ko.observableArray<Position>()
 	public readonly ethereumBrowser = ko.observable(isWeb3Enabled())
 	public readonly loggedIn = ko.observable(isLoggedIn())
@@ -42,8 +42,13 @@ export class Main {
 		this.liquidLong = this.loggedIn()
 			? LiquidLong.createWeb3(getEthereumProvider(), liquidLongContractAddress, 1, 1000)
 			: LiquidLong.createJsonRpc('https://eth-mainnet.alchemyapi.io/jsonrpc/7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE', liquidLongContractAddress, 1, 1000)
-		this.liquidLong.registerForEthPriceUpdated(x => this.currentPrice(x))
+			// : LiquidLong.createJsonRpc('http://localhost:1235', liquidLongContractAddress, 1, 1000)
 		this.populatePositions()
+
+		const affiliateQueryParam = getAffiliateFromQueryString()
+		this.affiliate = (/ipfs/.test(window.location.hostname))
+			? affiliateQueryParam
+			: localStorageGetOrSet('affiliate', affiliateQueryParam, Address.fromHexString.bind(Address))
 	}
 
 	public readonly login = async () => {
@@ -81,4 +86,18 @@ export class Main {
 		const ownerAddress = cdp.owner
 		return new Position(this, this.liquidLong, id, ethOnDeposit, debtInDai, ownerAddress)
 	}
+}
+
+const getAffiliateFromQueryString = (): Address => {
+	const affiliate = new URLSearchParams(window.location.search).get('affiliate')
+	if (affiliate === null) return new Address()
+	if (!/^(?:0x)?([a-zA-Z0-9]{40})$/.test(affiliate)) return new Address()
+	return Address.fromHexString(affiliate)
+}
+
+const localStorageGetOrSet = <R>(key: string, fallbackValue: {toString(): string}, deserialize: (x: string) => R): R => {
+	const fallbackString = fallbackValue.toString()
+	const storageValue = window.localStorage.getItem(key)
+	if (!storageValue) window.localStorage.setItem(key, fallbackString)
+	return deserialize(storageValue || fallbackString)
 }
