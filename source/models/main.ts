@@ -40,9 +40,9 @@ export class Main {
 
 	constructor() {
 		this.liquidLong = this.loggedIn()
-			? LiquidLong.createWeb3(getEthereumProvider(), liquidLongContractAddress, 1, 1000)
-			: LiquidLong.createJsonRpc('https://eth-mainnet.alchemyapi.io/jsonrpc/7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE', liquidLongContractAddress, 1, 1000)
-			// : LiquidLong.createJsonRpc('http://localhost:1235', liquidLongContractAddress, 1, 1000)
+			? LiquidLong.createWeb3(getEthereumProvider(), liquidLongContractAddress, async () => undefined, 1000)
+			: LiquidLong.createJsonRpc('https://eth-mainnet.alchemyapi.io/jsonrpc/7sE1TzCIRIQA3NJPD5wg7YRiVjhxuWAE', liquidLongContractAddress, async () => undefined, 1000)
+			// : LiquidLong.createJsonRpc('http://localhost:1235', liquidLongContractAddress, async () => undefined, 1000)
 		this.populatePositions()
 
 		const affiliateQueryParam = getAffiliateFromQueryString()
@@ -57,7 +57,7 @@ export class Main {
 		this.loggedIn(true)
 		// we don't want to keep hitting the public endpoint once we are connected through the browser ethereum interface, so shut the old one down
 		await this.liquidLong.shutdown()
-		this.liquidLong = LiquidLong.createWeb3(window.ethereum, liquidLongContractAddress, 1, 1000)
+		this.liquidLong = LiquidLong.createWeb3(window.ethereum, liquidLongContractAddress, async () => undefined, 1000)
 		this.populatePositions()
 	}
 
