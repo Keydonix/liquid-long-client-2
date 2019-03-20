@@ -5,7 +5,7 @@ import { LiquidLong, Address, Position as ContractPosition } from '@keydonix/liq
 // dev address
 // const liquidLongContractAddress = Address.fromHexString('B03CF72BC5A9A344AAC43534D664917927367487')
 // production address
-const liquidLongContractAddress = Address.fromHexString('28b61faf5f4b9381a9cdb38d9f87788c563e3644')
+const liquidLongContractAddress = Address.fromHexString('2FCBaFb681a086103e3d97927d9cA9Af9f1EBD22')
 
 interface EthereumProvider {
 	sendAsync?: (request: any, callback: (error: any, response: any) => void) => void
