@@ -448,9 +448,15 @@ a.open-position {
 }
 
 .footer-container {
+	display: grid;
+	grid-template-rows: auto auto;
 	font-size: 20px;
 	font-weight: lighter;
 	color: #FFFFFF;
+}
+
+.footer-container > .item {
+	display: block;
 }
 
 /* Font Icons: http://fontello.com/ */
